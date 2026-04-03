@@ -3,49 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DJ ANGEL</title>
+  <title>DJ ANGELS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-    .neon-border { box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); }
+    body { 
+      background: #000; 
+      color: #fff; 
+      font-family: sans-serif; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      min-height: 100vh; 
+    }
+    .neon-border { 
+      box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); 
+    }
   </style>
 </head>
 <body class="p-6">
   <div class="max-w-md w-full text-center">
+
+    <!-- Header -->
     <header class="flex justify-between items-center mb-10 opacity-40 text-[10px] tracking-[0.5em]">
-      <span>☰</span><h1>DJ ANGEL</h1><span>👤</span>
+      <span>☰</span>
+      <h1>DJ ANGELS</h1>
+      <span>👤</span>
     </header>
 
+    <!-- Album Cover -->
     <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900 neon-border">
-      <img id="cover" src="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/111/fff?text=DJ+ANGEL'">
-    </div>
-
-    <h2 id="title" class="text-3xl font-bold mb-10 uppercase tracking-tighter">Laden...</h2>
-
-    <div class="flex justify-center mb-10">
-      <a id="link" href="#" target="_blank" class="hover:scale-110 transition-transform">
-        <svg width="64" height="64" viewBox="0 0 168 168"><circle cx="84" cy="84" r="84" fill="#1DB954"/><path d="M119 114c-1.5 2.5-4.5 3.2-7 1.7-19-11.5-43-14-71-7-3 0.8-6-1-6.8-4-0.8-3 1-6 4-6.8 31-8 58-5 80 8 2.5 1.5 3.2 4.5 1.7 7z" fill="white"/><path d="M124 94c-2 3-6 4-9 2-22-13-55-17-81-8-3 1-7-1-8-5s1-7 5-8c30-9 67-5 93 10 3 2 4 6 2 9z" fill="white"/><path d="M126 72c-26-15-69-16-94-8-4 1-8-1-9-5-1-4 1-8 5-9 29-9 77-8 107 10 4 2 5 7 3 11-2 4-7 5-11 1z" fill="white"/></svg>
+      <a id="link" href="#" target="_blank">
+        <img id="cover" src="https://placehold.co/600x600/111/fff?text=DJ+ANGELS" class="w-full h-full object-cover">
       </a>
     </div>
 
+    <!-- Track Title -->
+    <h2 id="title" class="text-3xl font-bold mb-6 uppercase tracking-tighter">Laden...</h2>
+
+    <!-- Streaming Links -->
+    <div class="flex justify-center gap-6 mb-10">
+      <a href="#" id="spotify-link" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg" alt="Spotify" class="w-10 h-10">
+      </a>
+      <a href="https://music.apple.com/de/artist/dj-angels/1816599214" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applemusic.svg" alt="Apple Music" class="w-10 h-10">
+      </a>
+      <a href="https://music.amazon.de/artists/B08LCNJ33K/dj-angels" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonmusic.svg" alt="Amazon Music" class="w-10 h-10">
+      </a>
+    </div>
+
+    <!-- Spotify Player -->
     <div class="w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg bg-zinc-900">
       <iframe id="spotify-player" src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
+
   </div>
 
+  <!-- JS: Aktuelle Single laden -->
   <script>
     async function fetchTrack() {
       try {
-        const response = await fetch('/api');
+        const response = await fetch('/api/current-track');
         const data = await response.json();
-        if (data.cover) document.getElementById("cover").src = data.cover;
-        if (data.name) document.getElementById("title").innerText = data.name;
-        if (data.link) document.getElementById("link").href = data.link;
-      } catch (error) {
+
+        // Cover & Titel aktualisieren
+        if(data.cover) document.getElementById("cover").src = data.cover;
+        if(data.name) document.getElementById("title").innerText = data.name;
+        if(data.link) {
+          document.getElementById("link").href = data.link;
+          document.getElementById("spotify-link").href = data.link;
+          // Spotify Player aktualisieren
+          document.getElementById("spotify-player").src = `https://open.spotify.com/embed/album/${data.albumId}`;
+        }
+      } catch(error) {
         console.error("Fehler:", error);
-        document.getElementById("title").innerText = "DJ ANGEL";
+        document.getElementById("title").innerText = "DJ ANGELS";
       }
     }
+
     window.onload = fetchTrack;
   </script>
 </body>
