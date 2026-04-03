@@ -7,8 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-    .neon-text { text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+    .neon-text { text-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
   </style>
 </head>
 <body class="p-6">
@@ -21,7 +20,7 @@
       <img id="cover" src="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/111/fff?text=DJ+ANGELS'">
     </div>
 
-    <h2 id="title" class="text-3xl font-bold mb-1 neon-text uppercase tracking-tight">Wird geladen...</h2>
+    <h2 id="title" class="text-3xl font-bold mb-1 neon-text uppercase tracking-tighter">Wird geladen...</h2>
     <p id="status" class="text-cyan-400 text-[9px] tracking-[0.3em] mb-10 uppercase font-bold">Now Streaming</p>
 
     <div class="flex justify-center mb-10">
@@ -38,19 +37,17 @@
   <script>
     async function fetchTrack() {
       try {
-        // Ruft deine API auf (spotify.js im api-Ordner)
-        const r = await fetch('/api/spotify');
-        if (!r.ok) throw new Error('API nicht erreichbar');
-        
+        // Greift auf die neue get-spotify.js zu
+        const r = await fetch('/api/get-spotify');
+        if (!r.ok) throw new Error('API Error');
         const d = await r.json();
         
-        // UI mit Spotify-Daten füllen
-        document.getElementById("cover").src = d.cover;
-        document.getElementById("title").innerText = d.name;
-        document.getElementById("link").href = d.link;
+        if (d.cover) document.getElementById("cover").src = d.cover;
+        if (d.name) document.getElementById("title").innerText = d.name;
+        if (d.link) document.getElementById("link").href = d.link;
         document.getElementById("status").innerText = "Official Release";
       } catch (e) {
-        console.error("Fehler:", e);
+        console.error(e);
         document.getElementById("title").innerText = "DJ ANGELS";
         document.getElementById("status").innerText = "Check Spotify Link";
       }
