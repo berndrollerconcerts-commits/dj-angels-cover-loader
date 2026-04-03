@@ -1,12 +1,11 @@
 {
-  "rewrites": [
-    {
-      "source": "/current-track",
-      "destination": "/api/index.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+  "version": 2,
+  "functions": {
+    "api/get-spotify.js": {
+      "runtime": "vercel-node@latest"
     }
+  },
+  "rewrites": [
+    { "source": "/api/get-spotify", "destination": "/api/get-spotify.js" }
   ]
 }
