@@ -1,83 +1,68 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DJ ANGELS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { 
-      background: #000; 
-      color: #fff; 
-      font-family: sans-serif; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      min-height: 100vh; 
-    }
-    .neon-border { 
-      box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); 
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJ ANGELS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  .neon-border { box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); }
+  .icon:hover { transform: scale(1.1); transition: transform 0.2s; }
+</style>
 </head>
 <body class="p-6">
   <div class="max-w-md w-full text-center">
-
-    <!-- Header -->
     <header class="flex justify-between items-center mb-10 opacity-40 text-[10px] tracking-[0.5em]">
-      <span>☰</span>
-      <h1>DJ ANGELS</h1>
-      <span>👤</span>
+      <span>☰</span><h1>DJ ANGELS</h1><span>👤</span>
     </header>
 
-    <!-- Album Cover -->
+    <!-- Cover -->
     <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900 neon-border">
-      <a id="link" href="#" target="_blank">
+      <a id="cover-link" href="#" target="_blank">
         <img id="cover" src="https://placehold.co/600x600/111/fff?text=DJ+ANGELS" class="w-full h-full object-cover">
       </a>
     </div>
 
-    <!-- Track Title -->
+    <!-- Titel -->
     <h2 id="title" class="text-3xl font-bold mb-6 uppercase tracking-tighter">Laden...</h2>
 
-    <!-- Streaming Links -->
+    <!-- Streaming Icons -->
     <div class="flex justify-center gap-6 mb-10">
-      <a href="#" id="spotify-link" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg" alt="Spotify" class="w-10 h-10">
+      <!-- Spotify -->
+      <a id="spotify-btn" href="#" target="_blank" class="icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify" width="48">
       </a>
-      <a href="https://music.apple.com/de/artist/dj-angels/1816599214" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applemusic.svg" alt="Apple Music" class="w-10 h-10">
+      <!-- Apple Music -->
+      <a href="https://music.apple.com/de/artist/dj-angels/1816599214" target="_blank" class="icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_Music_logo.svg" alt="Apple Music" width="48">
       </a>
-      <a href="https://music.amazon.de/artists/B08LCNJ33K/dj-angels" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonmusic.svg" alt="Amazon Music" class="w-10 h-10">
+      <!-- Amazon Music -->
+      <a href="https://music.amazon.de/artists/B08LCNJ33K/dj-angels" target="_blank" class="icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Amazon_Music_logo.svg" alt="Amazon Music" width="48">
       </a>
     </div>
 
     <!-- Spotify Player -->
     <div class="w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg bg-zinc-900">
-      <iframe id="spotify-player" src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+      <iframe id="spotify-player" src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
-
   </div>
 
-  <!-- JS: Aktuelle Single laden -->
   <script>
     async function fetchTrack() {
       try {
-        const response = await fetch('/api/current-track');
-        const data = await response.json();
+        const res = await fetch('/api/current-track');
+        const data = await res.json();
 
-        // Cover & Titel aktualisieren
         if(data.cover) document.getElementById("cover").src = data.cover;
         if(data.name) document.getElementById("title").innerText = data.name;
         if(data.link) {
-          document.getElementById("link").href = data.link;
-          document.getElementById("spotify-link").href = data.link;
-          // Spotify Player aktualisieren
-          document.getElementById("spotify-player").src = `https://open.spotify.com/embed/album/${data.albumId}`;
+          document.getElementById("cover-link").href = data.link;
+          document.getElementById("spotify-btn").href = data.link;
         }
-      } catch(error) {
-        console.error("Fehler:", error);
+      } catch(err) {
+        console.error("Fehler:", err);
         document.getElementById("title").innerText = "DJ ANGELS";
       }
     }
