@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "functions": {
-    "api/get-spotify.js": {
-      "runtime": "vercel-node@latest"
-    }
-  },
-  "rewrites": [
-    { "source": "/api/get-spotify", "destination": "/api/get-spotify.js" }
+  "builds": [
+    { "src": "api/get-spotify.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/get-spotify", "dest": "api/get-spotify.js" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
