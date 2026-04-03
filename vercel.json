@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/current-track",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
