@@ -1,6 +1,8 @@
 {
-  "version": 2,
-  "rewrites": [
-    { "source": "/api/spotify", "destination": "/api/spotify.js" }
-  ]
+  "name": "dj-angels-api",
+  "version": "1.0.0",
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {}
 }
