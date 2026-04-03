@@ -3,34 +3,25 @@ export default async function handler(req, res) {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
-    // Token holen
-    const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
+    const token = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
-        "Authorization": "Basic " + Buffer.from(clientId + ":" + clientSecret).toString("base64"),
-        "Content-Type": "application/x-www-form-urlencoded"
+        Authorization: "Basic " + Buffer.from(clientId + ":" + clientSecret).toString("base64"),
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: "grant_type=client_credentials"
-    });
-    const tokenData = await tokenRes.json();
-    const accessToken = tokenData.access_token;
+      body: "grant_type=client_credentials",
+    }).then(r => r.json());
 
-    // Aktuelle Single
-    const albumId = "0kQNJeVJkWP3ViM4UokDAS";
-
-    const albumRes = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
-      headers: {
-        "Authorization": `Bearer ${accessToken}`
-      }
-    });
-    const album = await albumRes.json();
+    const album = await fetch(`https://api.spotify.com/v1/albums/0kQNJeVJkWP3ViM4UokDAS`, {
+      headers: { Authorization: `Bearer ${token.access_token}` },
+    }).then(r => r.json());
 
     res.status(200).json({
       name: album.name,
-      cover: album.images[0]?.url || "https://placehold.co/600x600/111/fff?text=No+Cover",
-      link: album.external_urls.spotify
+      cover: album.images?.[0]?.url,
+      link: album.external_urls.spotify,
     });
-  } catch (err) {
-    res.status(500).json({ error: "API Fehler", details: err.toString() });
+  } catch (e) {
+    res.status(500).json({ error: "Spotify API Fehler", details: e.toString() });
   }
 }
