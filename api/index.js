@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-  const albumId = "0kQNJeVJkWP3ViM4UokDAS";
+  const albumId = "457jwy35sGIaY6aNIzymXc"; 
 
   try {
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
