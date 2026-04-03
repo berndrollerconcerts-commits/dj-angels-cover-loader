@@ -1,66 +1,90 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DJ ANGELS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-    .neon-border { box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); }
-    .icon { width: 48px; height: 48px; margin: 0 10px; transition: transform 0.2s; }
-    .icon:hover { transform: scale(1.2); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJ Angels Cover Loader</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { margin:0; font-family:sans-serif; color:white; background:#000; display:flex; flex-direction:column; align-items:center; min-height:100vh;}
+  .glass { background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.1);}
+  .neon-text { text-shadow:0 0 15px rgba(255,255,255,0.4);}
+</style>
 </head>
 <body class="p-6">
 
-  <div class="max-w-md w-full text-center">
+<div class="max-w-md w-full flex flex-col text-center">
 
-    <header class="flex justify-between items-center mb-10 opacity-40 text-[10px] tracking-[0.5em]">
-      <span>☰</span>
-      <h1>DJ ANGELS</h1>
-      <span>👤</span>
-    </header>
+  <header class="flex justify-between items-center mb-10 opacity-50 text-[10px] tracking-[0.5em]">
+    <span>☰</span><h1>DJ ANGELS</h1><span>👤</span>
+  </header>
 
-    <!-- Cover -->
-    <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900 neon-border">
-      <img id="cover" src="https://placehold.co/600x600/111/fff?text=DJ+ANGELS" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/111/fff?text=DJ+ANGELS'">
-    </div>
-
-    <!-- Titel -->
-    <h2 id="title" class="text-3xl font-bold mb-6 uppercase tracking-tighter">Laden...</h2>
-
-    <!-- Streaming Links -->
-    <div class="flex justify-center mb-10">
-      <a id="spotify-link" href="#" target="_blank"><img src="/icons/spotify.svg" alt="Spotify" class="icon"></a>
-      <a href="https://music.apple.com/de/artist/dj-angels/1816599214" target="_blank"><img src="/icons/apple.svg" alt="Apple Music" class="icon"></a>
-      <a href="https://music.amazon.de/artists/B08LCNJ33K/dj-angels" target="_blank"><img src="/icons/amazon.svg" alt="Amazon Music" class="icon"></a>
-    </div>
-
-    <!-- Spotify Embed Player -->
-    <div class="w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg bg-zinc-900">
-      <iframe id="spotify-player" src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-    </div>
-
+  <!-- Cover + Vote -->
+  <div class="relative w-full aspect-square rounded-[2.5rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900">
+    <img id="currentCover" src="https://placehold.co/600x600/111/fff?text=Loading..." class="w-full h-full object-cover">
+    <button id="mainVoteBtn" onclick="handleVote()" class="absolute bottom-6 right-6 p-4 glass rounded-full hover:scale-110 transition-all">
+      <span id="heartIcon">❤️</span>
+    </button>
   </div>
 
-  <script>
-    async function fetchTrack() {
-      try {
-        const res = await fetch('/api/current-track');
-        const data = await res.json();
-        if (data.cover) document.getElementById("cover").src = data.cover;
-        if (data.name) document.getElementById("title").innerText = data.name;
-        if (data.link) document.getElementById("spotify-link").href = data.link;
-      } catch (e) {
-        console.error("Fehler beim Laden des Tracks:", e);
-        document.getElementById("title").innerText = "DJ ANGELS";
-        document.getElementById("cover").src = "https://placehold.co/600x600/111/fff?text=DJ+ANGELS";
-      }
-    }
+  <h2 id="currentTitle" class="text-4xl font-bold neon-text mb-1 uppercase tracking-tight">Loading...</h2>
+  <p class="text-[9px] tracking-[0.3em] text-cyan-400 font-bold mb-10 uppercase">Available on all platforms</p>
 
-    window.onload = fetchTrack;
-  </script>
+  <!-- Votes -->
+  <div class="glass w-full py-6 rounded-[2rem] mb-10">
+    <div class="text-white/60 font-medium tracking-widest text-[11px] uppercase">Votes: <span id="voteCount">0</span></div>
+  </div>
+
+  <!-- Plattform-Links -->
+  <div class="flex gap-8 justify-center items-center mb-10">
+    <a id="spotifyLink" href="#" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" class="w-10 h-10">
+    </a>
+    <a id="appleLink" href="https://music.apple.com/de/artist/dj-angels/1816599214" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_Music_logo.svg" class="w-10 h-10">
+    </a>
+    <a id="amazonLink" href="https://music.amazon.de/artists/B08LCNJ33K/dj-angels" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="w-10 h-10">
+    </a>
+  </div>
+
+  <!-- Top 3 EP -->
+  <div class="w-full rounded-[2rem] overflow-hidden mb-12 shadow-lg border border-white/5 bg-zinc-900">
+    <iframe id="topEP" style="border-radius:12px" src="https://open.spotify.com/embed/album/19Z4ALZ3h1oFCFfWWZOVq6" width="100%" height="352" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+  </div>
+
+</div>
+
+<script>
+let votes = 0;
+let hasVoted = false;
+
+function handleVote() {
+  if (!hasVoted) {
+    votes++;
+    document.getElementById("voteCount").innerText = votes.toLocaleString("de-DE");
+    hasVoted = true;
+  }
+}
+
+// ======================
+// Fetch aktuelle Single
+// ======================
+async function loadCurrentTrack() {
+  try {
+    const res = await fetch('/api/current-track');
+    const data = await res.json();
+    if(data.cover) document.getElementById("currentCover").src = data.cover;
+    if(data.name) document.getElementById("currentTitle").innerText = data.name;
+    if(data.link) document.getElementById("spotifyLink").href = data.link;
+    if(data.votes) document.getElementById("voteCount").innerText = data.votes.toLocaleString("de-DE");
+  } catch(e) {
+    console.error("Fehler beim Laden:", e);
+  }
+}
+
+window.onload = loadCurrentTrack;
+</script>
 
 </body>
 </html>
