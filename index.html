@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    .neon-border { box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); }
   </style>
 </head>
 <body class="p-6">
@@ -15,7 +16,7 @@
       <span>☰</span><h1>DJ ANGEL</h1><span>👤</span>
     </header>
 
-    <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900">
+    <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900 neon-border">
       <img id="cover" src="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/111/fff?text=DJ+ANGEL'">
     </div>
 
@@ -28,7 +29,7 @@
     </div>
 
     <div class="w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg bg-zinc-900">
-      <iframe src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+      <iframe id="spotify-player" src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
   </div>
 
@@ -41,6 +42,7 @@
         if (data.name) document.getElementById("title").innerText = data.name;
         if (data.link) document.getElementById("link").href = data.link;
       } catch (error) {
+        console.error("Fehler:", error);
         document.getElementById("title").innerText = "DJ ANGEL";
       }
     }
