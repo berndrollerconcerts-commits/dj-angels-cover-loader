@@ -1,12 +1,10 @@
-export default async function (req, res) {
+export default async function handler(req, res) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
   const albumId = "0kQNJeVJkWP3ViM4UokDAS";
 
   try {
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
-    
-    // 1. Token holen
     const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
@@ -17,7 +15,6 @@ export default async function (req, res) {
     });
     const { access_token } = await tokenRes.json();
 
-    // 2. Album Daten holen
     const albumRes = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
       headers: { Authorization: `Bearer ${access_token}` },
     });
