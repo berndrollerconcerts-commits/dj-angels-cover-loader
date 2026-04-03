@@ -54,14 +54,19 @@
     function handleVote() { votes++; document.getElementById("voteCount").innerText = votes.toLocaleString("de-DE"); }
     async function loadData() {
       try {
-        const res = await fetch('/api/index');
+        // Wir fragen direkt die index.js im api Ordner ab
+        const res = await fetch('/api/index.js');
+        if (!res.ok) throw new Error('Network error');
         const data = await res.json();
+        
         document.getElementById("currentCover").src = data.cover;
         document.getElementById("currentTitle").innerText = data.name; 
         document.getElementById("spotifyLink").href = data.link;
+        
         const albumId = data.link.split('/').pop().split('?')[0];
         document.getElementById("topEP").src = `https://open.spotify.com/embed/album/${albumId}?utm_source=generator&theme=0`;
       } catch (err) {
+        console.error(err);
         document.getElementById("currentTitle").innerText = "OFFLINE";
       }
     }
