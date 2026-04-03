@@ -15,7 +15,7 @@ async function refreshToken() {
     process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET
   ).toString("base64");
 
-  // KORREKTUR: Echte Spotify Token URL
+  // Spotify Auth Endpunkt
   const response = await axios.post(
     "https://accounts.spotify.com/api/token",
     "grant_type=client_credentials",
@@ -35,9 +35,11 @@ async function refreshToken() {
 app.get("/current-track", async (req, res) => {
   try {
     const token = await refreshToken();
+    
+    // Deine Top 3 EP Album ID
     const albumId = "0kQNJeVJkWP3ViM4UokDAS";
 
-    // KORREKTUR: Echte Spotify API URL mit Backticks für die Variable
+    // Spotify API Abruf mit Backticks und Dollarzeichen
     const response = await axios.get(
       `https://api.spotify.com/v1/albums/${albumId}`,
       {
@@ -55,7 +57,10 @@ app.get("/current-track", async (req, res) => {
     });
   } catch (err) {
     console.error("Spotify API Fehler:", err.response?.data || err.message);
-    res.status(500).json({ error: "Spotify API Fehler" });
+    res.status(500).json({ 
+      error: "Spotify API Fehler",
+      message: err.response?.data?.error?.message || err.message 
+    });
   }
 });
 
