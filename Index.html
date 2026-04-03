@@ -1,48 +1,30 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DJ Angels</title>
+  <meta charset="UTF-8"><title>DJ Angels</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { margin: 0; font-family: sans-serif; color: white; background: #000; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-    .neon-text { text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
-  </style>
 </head>
-<body class="p-6">
+<body class="bg-black text-white flex flex-col items-center p-10">
   <div class="max-w-md w-full text-center">
-    <h1 class="tracking-[0.5em] font-light text-[10px] uppercase mb-10">DJ ANGELS</h1>
-    <div class="relative w-full aspect-square rounded-[2.5rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900">
-      <img id="currentCover" src="" class="w-full h-full object-cover">
-    </div>
-    <h2 id="currentTitle" class="text-4xl font-bold neon-text mb-1 uppercase">Loading...</h2>
-    <div class="flex gap-8 justify-center mt-10">
-      <a id="spotifyLink" href="#" target="_blank" class="hover:scale-110 transition-all">
-        <svg class="w-12 h-12" viewBox="0 0 168 168"><circle cx="84" cy="84" r="84" fill="#1DB954"/><path d="M119 114c-1.5 2.5-4.5 3.2-7 1.7-19-11.5-43-14-71-7-3 0.8-6-1-6.8-4-0.8-3 1-6 4-6.8 31-8 58-5 80 8 2.5 1.5 3.2 4.5 1.7 7z" fill="white"/><path d="M124 94c-2 3-6 4-9 2-22-13-55-17-81-8-3 1-7-1-8-5s1-7 5-8c30-9 67-5 93 10 3 2 4 6 2 9z" fill="white"/><path d="M126 72c-26-15-69-16-94-8-4 1-8-1-9-5-1-4 1-8 5-9 29-9 77-8 107 10 4 2 5 7 3 11-2 4-7 5-11 1z" fill="white"/></svg>
-      </a>
-    </div>
+    <h1 class="text-[10px] tracking-[0.5em] mb-10">DJ ANGELS</h1>
+    <img id="cover" src="" class="w-full rounded-3xl mb-5 shadow-2xl">
+    <h2 id="title" class="text-3xl font-bold mb-5 uppercase">Loading...</h2>
+    <a id="link" href="#" target="_blank" class="inline-block bg-green-500 p-4 rounded-full">Spotify</a>
   </div>
 
   <script>
-    async function loadData() {
-      const paths = ['/api/current-track', '/api/index.js', '/api/index'];
-      for (const path of paths) {
-        try {
-          const res = await fetch(path);
-          if (res.ok) {
-            const data = await res.json();
-            document.getElementById("currentCover").src = data.cover;
-            document.getElementById("currentTitle").innerText = data.name;
-            document.getElementById("spotifyLink").href = data.link;
-            return; // Erfolg!
-          }
-        } catch (e) { console.log("Pfad " + path + " ging nicht."); }
+    async function load() {
+      try {
+        const res = await fetch('/api'); // Einfach nur /api rufen
+        const data = await res.json();
+        document.getElementById("cover").src = data.cover;
+        document.getElementById("title").innerText = data.name;
+        document.getElementById("link").href = data.link;
+      } catch (e) {
+        document.getElementById("title").innerText = "OFFLINE";
       }
-      document.getElementById("currentTitle").innerText = "OFFLINE";
     }
-    window.onload = loadData;
+    window.onload = load;
   </script>
 </body>
 </html>
