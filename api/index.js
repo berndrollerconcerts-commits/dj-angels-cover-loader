@@ -1,7 +1,6 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 let accessToken = null;
 let tokenExpire = 0;
@@ -18,7 +17,8 @@ async function refreshToken() {
   return accessToken;
 }
 
-app.get("/current-track", async (req, res) => {
+// Diese Funktion antwortet jetzt auf BEIDE Pfade
+const getTrack = async (req, res) => {
   try {
     const token = await refreshToken();
     const albumId = "0kQNJeVJkWP3ViM4UokDAS"; // Kiss me in Palermo
@@ -32,8 +32,12 @@ app.get("/current-track", async (req, res) => {
       brand: "DJ Angels" 
     });
   } catch (err) {
-    res.status(500).json({ error: "Spotify API Fehler" });
+    res.status(500).json({ error: "Spotify API Fehler", details: err.message });
   }
-});
+};
+
+app.get("/api/current-track", getTrack);
+app.get("/api/index.js", getTrack);
+app.get("/", getTrack);
 
 module.exports = app;
