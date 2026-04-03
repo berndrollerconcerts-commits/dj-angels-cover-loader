@@ -1,8 +1,7 @@
 {
-  "name": "dj-angels-api",
+  "name": "dj-angels-app",
   "version": "1.0.0",
-  "engines": {
-    "node": "18.x"
-  },
-  "dependencies": {}
+  "scripts": {
+    "vercel-build": "mkdir -p public && cp index.html public/"
+  }
 }
