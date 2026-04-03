@@ -3,24 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DJ ANGELS</title>
+  <title>DJ ANGEL</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-    .neon-text { text-shadow: 0 0 10px rgba(255,255,255,0.2); }
   </style>
 </head>
 <body class="p-6">
   <div class="max-w-md w-full text-center">
     <header class="flex justify-between items-center mb-10 opacity-40 text-[10px] tracking-[0.5em]">
-      <span>☰</span><h1>DJ ANGELS</h1><span>👤</span>
+      <span>☰</span><h1>DJ ANGEL</h1><span>👤</span>
     </header>
 
     <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-8 border border-white/10 shadow-2xl bg-zinc-900">
-      <img id="cover" src="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/111/fff?text=DJ+ANGELS'">
+      <img id="cover" src="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/111/fff?text=DJ+ANGEL'">
     </div>
 
-    <h2 id="title" class="text-3xl font-bold mb-10 uppercase tracking-tighter neon-text">Laden...</h2>
+    <h2 id="title" class="text-3xl font-bold mb-10 uppercase tracking-tighter">Laden...</h2>
 
     <div class="flex justify-center mb-10">
       <a id="link" href="#" target="_blank" class="hover:scale-110 transition-transform">
@@ -29,7 +28,7 @@
     </div>
 
     <div class="w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg bg-zinc-900">
-      <iframe id="spotify-player" src="https://open.spotify.com/embed/album/457jwy35sGIaY6aNIzymXc" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+      <iframe src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
   </div>
 
@@ -42,8 +41,7 @@
         if (data.name) document.getElementById("title").innerText = data.name;
         if (data.link) document.getElementById("link").href = data.link;
       } catch (error) {
-        console.error("API Error:", error);
-        document.getElementById("title").innerText = "DJ ANGELS";
+        document.getElementById("title").innerText = "DJ ANGEL";
       }
     }
     window.onload = fetchTrack;
