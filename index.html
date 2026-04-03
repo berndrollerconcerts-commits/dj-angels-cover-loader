@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8"><title>DJ ANGELS</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DJ ANGELS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
     .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    .neon-text { text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
   </style>
 </head>
 <body class="p-6">
@@ -18,30 +21,38 @@
       <img id="cover" src="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/111/fff?text=DJ+ANGELS'">
     </div>
 
-    <h2 id="title" class="text-3xl font-bold mb-10 uppercase">Loading...</h2>
+    <h2 id="title" class="text-3xl font-bold mb-1 neon-text uppercase tracking-tight">Wird geladen...</h2>
+    <p id="status" class="text-cyan-400 text-[9px] tracking-[0.3em] mb-10 uppercase font-bold">Now Streaming</p>
 
     <div class="flex justify-center mb-10">
-      <a id="link" href="#" target="_blank">
-        <svg width="60" height="60" viewBox="0 0 168 168"><circle cx="84" cy="84" r="84" fill="#1DB954"/><path d="M119 114c-1.5 2.5-4.5 3.2-7 1.7-19-11.5-43-14-71-7-3 0.8-6-1-6.8-4-0.8-3 1-6 4-6.8 31-8 58-5 80 8 2.5 1.5 3.2 4.5 1.7 7z" fill="white"/><path d="M124 94c-2 3-6 4-9 2-22-13-55-17-81-8-3 1-7-1-8-5s1-7 5-8c30-9 67-5 93 10 3 2 4 6 2 9z" fill="white"/><path d="M126 72c-26-15-69-16-94-8-4 1-8-1-9-5-1-4 1-8 5-9 29-9 77-8 107 10 4 2 5 7 3 11-2 4-7 5-11 1z" fill="white"/></svg>
+      <a id="link" href="#" target="_blank" class="hover:scale-110 transition-transform">
+        <svg width="64" height="64" viewBox="0 0 168 168"><circle cx="84" cy="84" r="84" fill="#1DB954"/><path d="M119 114c-1.5 2.5-4.5 3.2-7 1.7-19-11.5-43-14-71-7-3 0.8-6-1-6.8-4-0.8-3 1-6 4-6.8 31-8 58-5 80 8 2.5 1.5 3.2 4.5 1.7 7z" fill="white"/><path d="M124 94c-2 3-6 4-9 2-22-13-55-17-81-8-3 1-7-1-8-5s1-7 5-8c30-9 67-5 93 10 3 2 4 6 2 9z" fill="white"/><path d="M126 72c-26-15-69-16-94-8-4 1-8-1-9-5-1-4 1-8 5-9 29-9 77-8 107 10 4 2 5 7 3 11-2 4-7 5-11 1z" fill="white"/></svg>
       </a>
     </div>
 
-    <div class="w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg">
-      <iframe src="https://open.spotify.com/embed/album/0kQNJeVJkWP3ViM4UokDAS" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    <div class="w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg bg-zinc-900">
+      <iframe src="https://open.spotify.com/embed/album/457jwy35sGIaY6aNIzymXc" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
   </div>
 
   <script>
     async function fetchTrack() {
       try {
-        // Wir rufen jetzt die umbenannte Datei ab!
+        // Ruft deine API auf (spotify.js im api-Ordner)
         const r = await fetch('/api/spotify');
+        if (!r.ok) throw new Error('API nicht erreichbar');
+        
         const d = await r.json();
+        
+        // UI mit Spotify-Daten füllen
         document.getElementById("cover").src = d.cover;
         document.getElementById("title").innerText = d.name;
         document.getElementById("link").href = d.link;
+        document.getElementById("status").innerText = "Official Release";
       } catch (e) {
-        document.getElementById("title").innerText = "OFFLINE";
+        console.error("Fehler:", e);
+        document.getElementById("title").innerText = "DJ ANGELS";
+        document.getElementById("status").innerText = "Check Spotify Link";
       }
     }
     window.onload = fetchTrack;
